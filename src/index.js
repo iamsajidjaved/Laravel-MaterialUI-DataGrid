@@ -1,13 +1,13 @@
 import React, { forwardRef, useRef, useImperativeHandle } from 'react'
 import styles from './styles.module.css'
 import { DataGrid, GridOverlay } from '@material-ui/data-grid'
-import LinearProgress from '@material-ui/core/LinearProgress'
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 function CustomLoadingOverlay() {
   return (
     <GridOverlay>
-      <div style={{ position: 'absolute', top: 0, width: '100%' }}>
-        <LinearProgress />
+      <div style={{ position: 'absolute', top: '50%', width: '100%', textAlign: 'center' }}>
+        <CircularProgress />
       </div>
     </GridOverlay>
   )
