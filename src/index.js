@@ -1,12 +1,19 @@
 import React, { forwardRef, useRef, useImperativeHandle } from 'react'
 import styles from './styles.module.css'
 import { DataGrid, GridOverlay } from '@material-ui/data-grid'
-import CircularProgress from '@material-ui/core/CircularProgress';
+import CircularProgress from '@material-ui/core/CircularProgress'
 
 function CustomLoadingOverlay() {
   return (
     <GridOverlay>
-      <div style={{ position: 'absolute', top: '50%', width: '100%', textAlign: 'center' }}>
+      <div
+        style={{
+          position: 'relative',
+          top: '50%',
+          width: '100%',
+          textAlign: 'center'
+        }}
+      >
         <CircularProgress />
       </div>
     </GridOverlay>
@@ -15,6 +22,8 @@ function CustomLoadingOverlay() {
 
 export const ReactMaterialUIGrid = forwardRef((props, ref) => {
   const [loading, setLoading] = React.useState(false)
+  const [filterModel, setFilterModel] = React.useState('')
+  const [sortModel, setSortModel] = React.useState('')
 
   useImperativeHandle(ref, () => ({
     toggleLoader(value) {
@@ -74,19 +83,34 @@ export const ReactMaterialUIGrid = forwardRef((props, ref) => {
         page={props.data.current_page - 1}
         disableColumnFilter={props.options.filters.disableColumnFilter}
         onFilterModelChange={(params) => {
-          if (params.filterModel.items[0]) {
+          if (params.filterModel.items[0]) {       
             setLoading(true)
+            setFilterModel(params.filterModel.items[0])
             props.getUsersFun(
               props.data.current_page,
               parseInt(props.data.per_page),
-              params.filterModel.items[0]
+              params.filterModel.items[0],
+              sortModel
             )
           }
         }}
         disableColumnMenu={true}
+        sortingMode='server'
+        onSortModelChange={(params) => {
+          if (params.sortModel[0]) {
+            setLoading(true)
+            setSortModel(params.sortModel[0])
+            props.getUsersFun(
+              props.data.current_page,
+              parseInt(props.data.per_page),
+              filterModel,
+              params.sortModel[0]
+            )
+          }
+        }}
         loading={loading}
         components={{
-          LoadingOverlay: CustomLoadingOverlay,
+          LoadingOverlay: CustomLoadingOverlay
         }}
       />
     </div>

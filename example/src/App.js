@@ -59,6 +59,7 @@ const App = () => {
     page = 1,
     pageSize = 5,
     filters = '',
+    sorting = '',
     item_type_id = '',
     vendor_business_id = '',
     status = '',
@@ -70,6 +71,7 @@ const App = () => {
       page,
       pageSize,
       filters,
+      sorting,
       item_type_id,
       vendor_business_id,
       status,
@@ -84,7 +86,9 @@ const App = () => {
           '&pageSize=' +
           parseInt(pageSize) +
           '&filters=' +
-          JSON.stringify(filters)
+          JSON.stringify(filters) +
+          '&sorting=' +
+          JSON.stringify(sorting)
       )
       .then(function (response) {
         setUsers(response.data)
